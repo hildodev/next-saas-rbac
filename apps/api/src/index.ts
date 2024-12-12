@@ -1,5 +1,6 @@
+import { defineAbilityFor } from '@saas/auth'
 
-import { ability } from '@saas/auth'
+const ability = defineAbilityFor({ role: 'MEMBER' }) 
 
 const userCanInviteSomeoneElese = ability.can('invite', 'User')
 const userCanDeleteOtherUsers = ability.can('delete', 'User')

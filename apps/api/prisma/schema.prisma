@@ -15,12 +15,14 @@ model User {
   avatarUrl    String?  @map("avatar_url")
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
+
   tokens             Token[]
   accounts           Account[]
   invites            Invite[]
   member_on          Member[]
   owns_organizations Organization[]
   owns_projects      Project[]
+
   @@map("users")
 }
 
@@ -32,8 +34,10 @@ model Token {
   id        String    @id @default(uuid())
   type      TokenType
   createdAt DateTime  @default(now()) @map("created_at")
+
   user   User   @relation(fields: [userId], references: [id])
   userId String @map("user_id")
+
   @@map("tokens")
 }
 
@@ -45,8 +49,10 @@ model Account {
   id                String          @id @default(uuid())
   provider          AccountProvider
   providerAccountId String          @unique @map("provider_account_id")
+
   user   User   @relation(fields: [userId], references: [id])
   userId String @map("user_id")
+
   @@unique([provider, userId])
   @@map("accounts")
 }
@@ -62,10 +68,13 @@ model Invite {
   email     String
   role      Role
   createdAt DateTime @default(now()) @map("created_at")
+
   author User?   @relation(fields: [userId], references: [id])
   userId String? @map("user_id")
+
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String       @map("organization_id")
+
   @@unique([email, organizationId])
   @@index([email])
   @@map("invites")
@@ -74,10 +83,13 @@ model Invite {
 model Member {
   id   String @id @default(uuid())
   role Role   @default(MEMBER)
+
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String       @map("organization_id")
+
   user   User   @relation(fields: [userId], references: [id])
   userId String @map("user_id")
+
   @@unique([organizationId, userId])
   @@map("members")
 }
@@ -91,11 +103,14 @@ model Organization {
   avatarUrl                 String?  @map("avatar_url")
   createdAt                 DateTime @default(now()) @map("created_at")
   updatedAt                 DateTime @updatedAt @map("updated_at")
-  owner  User   @relation(fields: [userId], references: [id])
-  userId String @map("user_id")
+
+  owner   User   @relation(fields: [ownerId], references: [id])
+  ownerId String @map("owner_id")
+
   invites  Invite[]
   members  Member[]
   projects Project[]
+
   @@map("organizations")
 }
 
@@ -107,9 +122,12 @@ model Project {
   avatarUrl   String?  @map("avatar_url")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
+
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String       @map("organization_id")
-  owner  User   @relation(fields: [userId], references: [id])
-  userId String @map("user_id")
+
+  owner   User   @relation(fields: [ownerId], references: [id])
+  ownerId String @map("owner_id")
+
   @@map("projects")
 }

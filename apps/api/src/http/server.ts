@@ -14,6 +14,7 @@ import fastifySwaggerUI from '@fastify/swagger-ui'
 import fastifyJwt from '@fastify/jwt'
 import { authenticateWithPassword } from '@/http/routes/auth/authenticate-with-password'
 import { getProfile } from '@/http/routes/auth/get-profile'
+import { errorHandler } from './error-handler'
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -35,6 +36,9 @@ app.register(fastifySwagger, {
   },
   transform: jsonSchemaTransform,
 })
+
+app.setErrorHandler(errorHandler)
+
 app.register(fastifySwaggerUI, {
   routePrefix: '/docs',
 })

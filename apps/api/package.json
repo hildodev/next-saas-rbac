@@ -22,12 +22,13 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^9.3.0",
+    "@saas/env": "workspace:*",
     "@saas/eslint-config": "workspace:*",
     "@saas/prettier": "workspace:*",
-    "@saas/env": "workspace:*",
     "@saas/tsconfig": "workspace:*",
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20.12.6",
+    "dotenv-cli": "^8.0.0",
     "prisma": "^6.1.0",
     "tsx": "^4.7.2"
   },

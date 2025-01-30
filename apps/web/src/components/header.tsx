@@ -5,6 +5,7 @@ import rocketseatIcon from '@/assets/rocketseat-icon.svg'
 import { ability } from '@/auth/auth'
 
 import { OrganizationSwitcher } from './organization-switcher'
+import { ProjectSwitcher } from './project-switcher'
 import { ProfileButton } from './profile-button'
 import { ThemeSwitcher } from './theme/theme-switcher'
 import { Separator } from './ui/separator'
@@ -27,6 +28,13 @@ export async function Header() {
         <Slash className="size-3 -rotate-[24deg] text-border" />
 
         <OrganizationSwitcher />
+
+        {permissions?.can('get', 'Project') && (
+          <>
+            <Slash className="size-3 -rotate-[24deg] text-border" />
+            <ProjectSwitcher />
+          </>
+        )}
 
         {permissions?.can('get', 'Project') && <p>Project</p>}
       </div>

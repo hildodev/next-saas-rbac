@@ -2,6 +2,7 @@ import { ThemeProvider } from 'next-themes'
 import './globals.css'
 
 import type { Metadata } from 'next'
+import { Providers } from './provider'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -20,7 +21,7 @@ export default function RootLayout({
           defaultTheme="dark"
           disableTransitionOnChange
         >
-          {children}
+          <Providers>{children}</Providers>
         </ThemeProvider>
       </body>
     </html>

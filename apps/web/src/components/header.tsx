@@ -5,25 +5,22 @@ import rocketseatIcon from '@/assets/rocketseat-icon.svg'
 import { ability } from '@/auth/auth'
 
 import { OrganizationSwitcher } from './organization-switcher'
-import { ProjectSwitcher } from './project-switcher'
 import { ProfileButton } from './profile-button'
+import { ProjectSwitcher } from './project-switcher'
 import { ThemeSwitcher } from './theme/theme-switcher'
 import { Separator } from './ui/separator'
-import Link from 'next/link'
 
 export async function Header() {
   const permissions = await ability()
 
   return (
-    <div className="mx-auto flex max-w-[1200px] items-center justify-between border-b pb-2">
+    <div className="mx-auto flex max-w-[1200px] items-center justify-between">
       <div className="flex items-center gap-3">
-        <Link href="/">
-          <Image
-            src={rocketseatIcon}
-            className="size-6 dark:invert"
-            alt="Rocketseat"
-          />
-        </Link>
+        <Image
+          src={rocketseatIcon}
+          className="size-6 dark:invert"
+          alt="Rocketseat"
+        />
 
         <Slash className="size-3 -rotate-[24deg] text-border" />
 
@@ -35,8 +32,6 @@ export async function Header() {
             <ProjectSwitcher />
           </>
         )}
-
-        {permissions?.can('get', 'Project') && <p>Project</p>}
       </div>
 
       <div className="flex items-center gap-4">

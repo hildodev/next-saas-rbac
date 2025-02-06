@@ -2,6 +2,7 @@ import { roleSchema } from '@saas/auth'
 import type { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
+
 import { auth } from '@/http/middlewares/auth'
 import { BadRequestError } from '@/http/routes/_errors/bad-request-error'
 import { UnauthorizedError } from '@/http/routes/_errors/unauthorized-error'
@@ -38,6 +39,7 @@ export async function createInvite(app: FastifyInstance) {
         const userId = await request.getCurrentUserId()
         const { organization, membership } =
           await request.getUserMembership(slug)
+
         const { cannot } = getUserPermissions(userId, membership.role)
 
         if (cannot('create', 'Invite')) {
@@ -47,11 +49,12 @@ export async function createInvite(app: FastifyInstance) {
         }
 
         const { email, role } = request.body
-        const [, domain] = email
+
+        const [, domain] = email.split('@')
 
         if (
           organization.shouldAttachUsersByDomain &&
-          domain !== organization.domain
+          domain === organization.domain
         ) {
           throw new BadRequestError(
             `Users with '${domain}' domain will join your organization automatically on login.`,

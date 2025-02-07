@@ -1,6 +1,8 @@
-import { signInWithGithub } from '@/http/sign-in-with-github'
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
+
+import { acceptInvite } from '@/http/accept-invite'
+import { signInWithGithub } from '@/http/sign-in-with-github'
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams
@@ -17,11 +19,19 @@ export async function GET(request: NextRequest) {
   const { token } = await signInWithGithub({ code })
 
   const cookieStore = await cookies()
-
   cookieStore.set('token', token, {
     path: '/',
     maxAge: 60 * 60 * 24 * 7, // 7days
   })
+
+  const inviteId = cookieStore.get('inviteId')?.value
+
+  if (inviteId) {
+    try {
+      await acceptInvite(inviteId)
+      cookieStore.delete('inviteId')
+    } catch {}
+  }
 
   const redirectUrl = request.nextUrl.clone()
 
